@@ -6,19 +6,19 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-backend
 WORKDIR /src
 ENV ASPNETCORE_ENVIRONMENT=Test
-COPY ["SAM.API/SAM.API.csproj", "SAM.API/"]
-COPY ["SAM.BLL/SAM.BLL.csproj", "SAM.BLL/"]
-COPY ["SAM.DAL/SAM.DAL.csproj", "SAM.DAL/"]
-COPY ["SAM.DAL/SAM.Domain.csproj", "SAM.Domain/"]
-RUN dotnet restore "SAM.API/SAM.API.csproj"
+COPY ["SAM.Api/SAM.Api.csproj", "SAM.Api/"]
+COPY ["SAM.BLL/SAM.Application.csproj", "SAM.BLL/"]
+COPY ["SAM.DAL/SAM.Infrastructure.csproj", "SAM.DAL/"]
+COPY ["SAM.Domain/SAM.Domain.csproj", "SAM.Domain/"]
+RUN dotnet restore "SAM.Api/SAM.Api.csproj"
 COPY . .
-WORKDIR "/src/SAM.API"
-RUN dotnet build "SAM.API.csproj" -c Release -o /app/build
+WORKDIR "/src/SAM.Api"
+RUN dotnet build "SAM.Api.csproj" -c Release -o /app/build
 
 FROM build-backend AS publish
-RUN dotnet publish "SAM.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "SAM.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
 RUN dotnet tool install --version 6.4.0 Swashbuckle.AspNetCore.Cli --tool-path /
-RUN /swagger tofile --output /app/swagger.json /app/publish/SAM.API.dll v1
+RUN /swagger tofile --output /app/swagger.json /app/publish/SAM.Api.dll v1
 
 FROM node:14.21.3-alpine AS frontend-build
 WORKDIR /app
@@ -42,4 +42,4 @@ COPY --from=publish /app/publish .
 ENV ASPNETCORE_URLS=http://+:80
 EXPOSE 80
 
-ENTRYPOINT ["dotnet", "SAM.API.dll"]
+ENTRYPOINT ["dotnet", "SAM.Api.dll"]
