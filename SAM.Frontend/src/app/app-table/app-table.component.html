@@ -1,0 +1,111 @@
+<div class="pick-up-number">
+  <button class="pick-up-btn" (click)="decrement()">-</button>
+  <span class="pick-up-value">{{ nr }}</span>
+  <button class="pick-up-btn" (click)="increment()">+</button>
+</div>
+
+
+<div class="table-container" style="display: flex; flex-direction: column">
+  <div *ngIf="isLoading" class="spinner-overlay">Loading...</div>
+
+  <mat-table
+    *ngIf="topApps.length > 0"
+    [dataSource]="dataSource"
+    class="mat-elevation-z8"
+    style="margin-top: 16px"
+  >
+    <ng-container matColumnDef="index">
+      <mat-header-cell
+        *matHeaderCellDef
+        [ngStyle]="{
+          'background-color': '#2196f3',
+          'font-weight': 'bold'
+        }"
+        >Index</mat-header-cell
+      >
+      <mat-cell *matCellDef="let app; let i = index">{{ i + 1 }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell
+        *matHeaderCellDef
+        [ngStyle]="{
+          'background-color': '#2196f3',
+          'font-weight': 'bold'
+        }"
+        >Name</mat-header-cell
+      >
+      <mat-cell
+        *matCellDef="let app"
+        [ngStyle]="{ 'background-color': '#8bc34a' }"
+      >
+        <img
+          *ngIf="app.imagePath"
+          [src]="app.imagePath"
+          alt="{{ app.name }} Icon"
+          style="width: 48px; height: 48px; margin-right: 8px"
+        />
+        {{ app.name }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="category">
+      <mat-header-cell
+        *matHeaderCellDef
+        [ngStyle]="{
+          'background-color': '#2196f3',
+        }"
+        >Category</mat-header-cell
+      >
+      <mat-cell *matCellDef="let app">{{ app.category }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="rating">
+      <mat-header-cell
+        *matHeaderCellDef
+        [ngStyle]="{
+          'background-color': '#2196f3',
+        }"
+        >Rating</mat-header-cell
+      >
+      <mat-cell *matCellDef="let app">{{ app.rating }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="downloadsString">
+      <mat-header-cell
+        *matHeaderCellDef
+        [ngStyle]="{
+          'background-color': '#2196f3',
+          'font-weight': 'bold'
+        }"
+        >Downloads</mat-header-cell
+      >
+      <mat-cell *matCellDef="let app">{{ app.downloadsString }}</mat-cell>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+      <mat-cell *matCellDef="let app" [matTooltip]="app.description">
+        {{
+          app.description.length > 10
+            ? (app.description | slice : 0 : 10) + "..."
+            : app.description
+        }}
+      </mat-cell>
+    </ng-container> -->
+
+    <!-- Aplică stiluri la componente Material folosind ngStyle -->
+    <mat-header-row
+      *matHeaderRowDef="displayedColumns"
+      [ngStyle]="{
+        'background-color': '#2196f3',
+        'font-weight': 'bold'
+      }"
+    ></mat-header-row>
+    <mat-row
+      *matRowDef="let row; columns: displayedColumns"
+      [ngStyle]="{ transition: 'background-color 0.3s ease' }"
+      [ngClass]="{ 'mat-row-even': row.even, 'mat-row-odd': row.odd }"
+    ></mat-row>
+  </mat-table>
+</div>
