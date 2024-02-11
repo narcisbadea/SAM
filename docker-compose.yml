@@ -1,0 +1,30 @@
+version: '3'
+services:
+  backend:
+    container_name: SAMAPI
+    build:
+      context: .
+      target: final-backend
+    ports:
+      - '7044:80'
+    networks:
+      - sam_network
+
+  frontend:
+    container_name: SAMFrontend
+    build:
+      context: .
+      target: final-frontend
+    ports:
+      - '4200:80'
+    depends_on:
+      - backend
+    networks:
+      - sam_network
+
+networks:
+  sam_network:
+    driver: bridge
+
+volumes:
+  sqlserver_data:

@@ -8,8 +8,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AppService {
-  private apiUrlFree = 'https://localhost:7253/api/top-selling/free?number=';
-  private apiUrlPaid = 'https://localhost:7253/api/top-selling/paid?number=';
+  private apiUrlFree = 'http://localhost:7044/api/top-selling/free?number=';
+  private apiUrlPaid = 'http://localhost:7044/api/top-selling/paid?number=';
 
   constructor(private http: HttpClient) {}
 
